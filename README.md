@@ -25,7 +25,7 @@ ohne Kabel an die Zentrale meldet - über einen Gateway und per TCP.
 
 <img src="funk-gbm-proto-kl.jpg">Funk_GBM Prototyp im C-Gleis</img>
 
-<img src="funk-gbm-sw-kl.jpg">Screenshot Raspi mit LbServer, Gleisbildstellpult und Gateway</img>
+<img src="funk-gbm-sw-kl.png">Screenshot Raspi mit LbServer, Gleisbildstellpult und Gateway</img>
 
 (C) Michael Blank 2020
 
