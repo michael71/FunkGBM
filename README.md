@@ -30,4 +30,4 @@ ohne Kabel an die Zentrale meldet - über einen Gateway und per TCP.
 
 (C) Michael Blank 2020
 
-siehe auch <a href="http://opensx.net/funkgbm">Funk-GBM auf opensx.net</a>
+siehe auch <a href="http://opensx.net/wordpress/projekte/funkgbm">Funk-GBM auf opensx.net</a>

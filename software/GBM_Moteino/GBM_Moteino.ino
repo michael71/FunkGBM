@@ -2,7 +2,7 @@
 // GBM_Moteino
 //
 // Michael Blank,
-#define VERSION "V2020-07-21"
+#define VERSION "V2020-08-28 SP000"    // VERSION and Gleisspannung  
 //  OTA working
 //
 // **********************************************************************************
@@ -73,7 +73,7 @@ SPIFlash flash(SS_FLASHMEM, 0xEF30); //EF30 for windbond 4mbit flash
 
 
 #define AUTOSEND_INTERVAL   (19900)     // every 20 seconds
-#define VERSION_INTERVAL  (600000)    // every 10 minutes
+#define VERSION_INTERVAL  (300000)    // every 5 minutes
 
 uint8_t nodeID;  // will be read from EEPROM
 #define GATEWAY   1   // id of the receiving node
@@ -95,6 +95,18 @@ uint32_t version_interval, autosend_interval;
 char buf[] = "G09 0";     // msg buffer to send
 // example 'G09 1' : G=GBM, ID=9, value = 1 (=occupied)
 char ver[] = VERSION;
+
+// convert 0..999 to char[] and include in ver[]
+void analogToVerArray(uint16_t v) {
+    if (v > 999) v = 999;
+    uint8_t tmp = v / 100;
+    ver[14] = '0' + tmp;
+    v = (v - tmp * 100);
+    tmp = v / 10;
+    ver[15] = '0' + tmp;
+    v = v - tmp * 10;
+    ver[16] = '0' + v;
+}
 
 void setup() {
   Serial.begin(SERIAL_BAUD);
@@ -193,6 +205,12 @@ void loop() {
 
   // check if version needs to be sent
   if ((millis() - versionSent) > version_interval) {
+    // reaq input voltage from track
+    uint16_t volts = analogRead(A6) >> 2;
+    Serial.print("Volt*10=");
+    Serial.println(volts);
+    analogToVerArray(volts);
+    
     uint8_t vlen = strlen(ver);
     if (radio.sendWithRetry(GATEWAY, ver, vlen)) {
       Serial.println((char *)ver);

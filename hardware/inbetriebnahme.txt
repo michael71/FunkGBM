@@ -1,0 +1,8 @@
+1. bestücken, Antennen nicht vergessen
+2. mit avrispmkii bootloader brennen: Typ "Moteino-8Mhz"
+3. mit FTDI Adapter an serial port anschliessen
+4. mit arduino-IDE "WriteID" hochladen (vorher ino-file editieren und passende ID einfügen, damit sie ins EEPROM geschrieben wird - mit serial-monitor checken)
+5. mit arduino-IDE "GBM_Moteino" hochladen
+6. am Gateway checken, ob funksignal ankommt 
+
+
