@@ -18,3 +18,4 @@ Ein Processing Sketch, der die am Gateway empfangenen Daten visualisiert und
  neuerer Hardware wird auch die Spannung am Gleis gemessen und zusammen mit der 
  Software-Version angezeigt.
 
+<img src="processing-graphics.png" />
