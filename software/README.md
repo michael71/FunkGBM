@@ -7,7 +7,7 @@ Arduino-Sketch für die Hardware, die im Gleis sitzt (GBM_RFM69 mit ATmega328p)
 Gateway-Hardware (in diesem Fall ein Arduino-M0 von LowPowerLab),
  die die empfangenen Pakete über USB an den PC weiterreicht.
  
-<img src="GBM_Gateway_MO/funk-gateway-kl.jpg" />
+<img src="funk-gateway-kl.jpg" />
  
 ## MoteinoRead
 Ein Processing Sketch, der die am Gateway empfangenen Daten visualisiert und  
