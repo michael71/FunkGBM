@@ -1,15 +1,15 @@
-## Software zum FunkGBM (beta)
+# Software zum FunkGBM (beta)
 
-# GBM_Moteino
+## GBM_Moteino
 Arduino-Sketch für die Hardware, die im Gleis sitzt (GBM_RFM69 mit ATmega328p)
 
-# GM_Gateway_M0
-Gateway-Hardware (in diesem Fall ein Arduion-M0 von LowPowerLab),
+## GBM_Gateway_M0
+Gateway-Hardware (in diesem Fall ein Arduino-M0 von LowPowerLab),
  die die empfangenen Pakete über USB an den PC weiterreicht.
  
- <img src="GBM_Gateway_MO/funk-gateway-kl.jpg" />
+<img src="GBM_Gateway_MO/funk-gateway-kl.jpg" />
  
-# MoteinoRead
+## MoteinoRead
 Ein Processing Sketch, der die am Gateway empfangenen Daten visualisiert und  
  per TCP als "Sensor-Message" an das Loconet  bzw den "LbServer" weiterreicht.
  
