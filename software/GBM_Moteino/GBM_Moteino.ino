@@ -2,12 +2,12 @@
 // GBM_Moteino
 //
 // Michael Blank,
-#define VERSION "V2020-08-28 SP000"    // VERSION and Gleisspannung  
+#define VERSION "V2020-08-30 SP000"    // VERSION and Trackvoltage
 //  OTA working
 //
 // **********************************************************************************
 // Hardware setup:
-// GBM input at A7
+// GBM input at A7, Trackvoltage at A6
 // **********************************************************************************
 // Copyright Felix Rusu 2016
 //           Michael Blank 2020
@@ -120,7 +120,7 @@ void setup() {
     Serial.println("ERROR, nodeID not set in EEPROM");
     nodeID = 99;
   }
-  if (nodeID > 10) buf[1] = '0' + nodeID / 10;
+  if (nodeID >= 10) buf[1] = '0' + nodeID / 10;
   buf[2] = '0' + nodeID % 10;
 
 

@@ -8,7 +8,10 @@
  * 7745 ID4 -32 G04 09  
  * time[s] ID# RSSI Ident value
  *
- * (C) Michael Blank, 20 Jul 2020
+ * version string (with track voltage "SP"):
+ * 2593 ID10 -42 V2020-08-30 SP205
+ *
+ * (C) Michael Blank, 30 Aug 2020
  * 
  */
 
@@ -16,6 +19,8 @@
 import processing.serial.*;
 import java.util.*;
 import processing.net.*; 
+
+boolean connectLbServer = true;
 
 Client c; 
 String input;
@@ -44,7 +49,8 @@ String portName = "/dev/ttyACM0";
 
 void setup() 
 {
-    size(400, 240);  // y=BOTTOM
+    size(400, 300);  // y=BOTTOM
+    
     String serPorts[] = Serial.list();
     if (Arrays.asList(serPorts).contains("/dev/ttyACM1")) {
         // in the unlikely case that the Arduino is not on ACM0
@@ -56,7 +62,9 @@ void setup()
     frameRate(5);
     surface.setResizable(true);
     
+    if (connectLbServer) {
     c = new Client(this, "localhost", 1234); 
+    }
 }
 
 void draw()
@@ -115,14 +123,18 @@ void mousePressed() {
 }
 
 void evalMsg(String[] m) {
-    int id = int(m[1].charAt(2)) - int('0');  // 1 character only !! TODO
+    String idStr = "99";  // invalid
+    if (m[1].length() >=2) {  // from "ID18" we extract the number
+      idStr = m[1].substring(2);
+    }
+    int id = parseInt(idStr); 
     int index = getGBM(id);
     char type = m[3].charAt(0);  // g(bm) message or v(ersion) message
 
     if (index == -1) {   // first time this GBM sends a message
         if (type == 'G') {
             gbms.add(new GBM(id, parseInt(m[2]), parseInt(m[4]) ) );
-            sendUpdateToLoconet(id,parseInt(m[4]));
+            if (connectLbServer) sendUpdateToLoconet(id,parseInt(m[4]));
         } else {
             gbms.add(new GBM(id, parseInt(m[2]), m[3]) );
         }
@@ -138,11 +150,14 @@ void evalMsg(String[] m) {
         upd.occupied =  parseInt(m[4]);
         upd.recTime = millis();
         //println(upd.toString());
-        if (c != null) sendUpdateToLoconet(upd.ID,upd.occupied);
+        if (connectLbServer)  sendUpdateToLoconet(upd.ID,upd.occupied);
         break;
     case 'V':
         upd.rssi = parseInt(m[2]);
         upd.version = m[3];
+        if (m.length >= 5 ) {  // track voltage info, not sent from all devices
+          upd.version += " "+m[4];
+        }
     }
 }
 
@@ -186,8 +201,10 @@ void drawOccupancyCircle(int ind) {
 }
 
 void sendUpdateToLoconet(int id, int occ) {
+    // create hex-string for binary loconet sensor message
+    // id should not be higher than 99
     String msg = "B2 ";
-    int id2 = (id-1)/2;
+    int id2 = (id-1)/2; // the lowest address bit is NOT directly send
     if (id2 < 15) msg += '0';
     msg += Integer.toHexString(id2) + ' ';
     int idBit1 = id & 0x1;
@@ -195,7 +212,7 @@ void sendUpdateToLoconet(int id, int occ) {
     msg += Integer.toHexString(val);
     msg = addChecksumToLNString(msg);
     println(msg); 
-    c.write("SEND "+ msg + '\n');
+    if (c != null) c.write("SEND "+ msg + '\n');
 }
 
 int checkAges() {
